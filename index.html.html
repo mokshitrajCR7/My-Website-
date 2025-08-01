@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Belle Alisha - Luxury Women's Fashion Boutique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #dc9fb4;
+            --secondary: #f8e1e7;
+            --dark: #3a3a3a;
+            --light: #ffffff;
+        }
+        
+        body {
+            font-family: 'Avenir', 'Helvetica', sans-serif;
+            color: var(--dark);
+            scroll-behavior: smooth;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .border-primary {
+            border-color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bad26b24-7127-40cf-8722-b1ba04b8764c.png') no-repeat center center;
+            background-size: cover;
+            height: 80vh;
+        }
+        
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+        
+        .product-overlay {
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .cart-item-enter {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .cart-item-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 300ms ease;
+        }
+        
+        .cart-item-exit {
+            opacity: 1;
+        }
+        
+        .cart-item-exit-active {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 300ms ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/09bd9163-e29b-4ebf-8091-037942398ee2.png" alt="La Belle Alisha logo - elegant script text with rose gold color palette" class="h-12 mr-2">
+                <span class="text-2xl font-bold text-primary hidden sm:block">La Belle Alisha</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-primary font-medium">Home</a>
+                <a href="#collection" class="hover:text-primary font-medium">Collection</a>
+                <a href="#about" class="hover:text-primary font-medium">About</a>
+                <a href="#contact" class="hover:text-primary font-medium">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="cartBtn" class="relative hover:text-primary">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button class="md:hidden" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-white px-4 py-2 shadow-md">
+            <a href="#home" class="block py-2 hover:text-primary">Home</a>
+            <a href="#collection" class="block py-2 hover:text-primary">Collection</a>
+            <a href="#about" class="block py-2 hover:text-primary">About</a>
+            <a href="#contact" class="block py-2 hover:text-primary">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero flex items-center justify-center text-white mt-16">
+        <div class="text-center px-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">La Belle Alisha</h1>
+            <p class="text-xl md:text-2xl mb-8">Elegance. Craftsmanship. Timeless Beauty</p>
+            <a href="#collection" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-full font-medium">Shop Collection</a>
+        </div>
+    </section>
+
+    <!-- Featured Collection -->
+    <section id="collection" class="container mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Our Latest Collection</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Exquisite designs crafted with precision and passion to enhance your natural beauty</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="productsContainer">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9cc0420-652e-42d1-b5b3-061d12a5dd73.png" alt="Alisha standing in her design studio with fashion sketches on the wall and fabric samples on table" class="rounded-lg shadow-xl w-full">
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-6">Meet Alisha</h2>
+                    <p class="text-gray-600 mb-4">From a young age, Alisha had a passion for fashion and design. After studying at the Paris Fashion Institute and working with several top designers, she launched La Belle Alisha to bring her unique vision to life.</p>
+                    <p class="text-gray-600 mb-4">Each piece in our collection is meticulously designed and handcrafted using only the finest materials. We believe in slow fashion - creating high-quality garments that stand the test of time both in style and durability.</p>
+                    <p class="text-gray-600 mb-6">Our mission is to empower women to feel confident and beautiful in clothing that reflects their individuality.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary hover:text-primary-dark">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-primary hover:text-primary-dark">
+                            <i class="fab fa-pinterest text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-primary hover:text-primary-dark">
+                            <i class="fab fa-facebook text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3cfe67fc-7f1d-4ddf-90fd-5eb0101dd72f.png" alt="Portrait of Sarah M., a satisfied customer in her 30s wearing one of Alisha's floral dresses" class="rounded-full h-12 w-12 mr-4">
+                        <div>
+                            <h4 class="font-bold">Sarah M.</h4>
+                            <p class="text-gray-500 text-sm">Frequent Customer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"I've never felt more confident in a dress than when I wear Alisha's designs. The craftsmanship is exceptional and I always receive compliments!"</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6d82a4a2-d960-4f23-bab0-55387e414250.png" alt="Portrait of Emma K., a happy customer in her 40s smiling in a formal gown from the boutique" class="rounded-full h-12 w-12 mr-4">
+                        <div>
+                            <h4 class="font-bold">Emma K.</h4>
+                            <p class="text-gray-500 text-sm">Bride</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Alisha created the most beautiful custom wedding dress for me. She listened to all my ideas and brought them to life beyond my expectations."</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/175c2ab2-2af3-4ece-9f7a-f76608862879.png" alt="Portrait of Jessica T., a business professional in her late 20s wearing an elegant office dress" class="rounded-full h-12 w-12 mr-4">
+                        <div>
+                            <h4 class="font-bold">Jessica T.</h4>
+                            <p class="text-gray-500 text-sm">Corporate Client</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"These dresses are perfect for the office. Professional yet feminine, comfortable yet stylish. I now own five pieces and counting!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
+                <p class="max-w-2xl mx-auto">Have questions about our collection or interested in custom designs? Reach out to us!</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded bg-white bg-opacity-10 border border-white border-opacity-30 focus:outline-none focus:border-opacity-100">
+                    </div>
+                    <div>
+                        <label for="email" class="block mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 rounded bg-white bg-opacity-10 border border-white border-opacity-30 focus:outline-none focus:border-opacity-100">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="subject" class="block mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full px-4 py-2 rounded bg-white bg-opacity-10 border border-white border-opacity-30 focus:outline-none focus:border-opacity-100">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="message" class="block mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 rounded bg-white bg-opacity-10 border border-white border-opacity-30 focus:outline-none focus:border-opacity-100"></textarea>
+                    </div>
+                    <div class="md:col-span-2 text-center">
+                        <button type="submit" class="bg-white text-primary px-8 py-3 rounded-full font-medium hover:bg-opacity-90">Send Message</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="mt-12 pt-12 border-t border-white border-opacity-20">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <i class="fas fa-map-marker-alt text-2xl mb-4"></i>
+                        <h4 class="font-bold mb-2">Studio Address</h4>
+                        <p>123 Fashion Avenue<br>New York, NY 10001</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-phone-alt text-2xl mb-4"></i>
+                        <h4 class="font-bold mb-2">Contact</h4>
+                        <p>+1 (212) 555-1234<br>info@labellealisha.com</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-clock text-2xl mb-4"></i>
+                        <h4 class="font-bold mb-2">Hours</h4>
+                        <p>Monday - Friday: 10AM - 6PM<br>Saturday: 11AM - 4PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/781a6863-3054-45b6-98c2-669384bf05bc.png" alt="La Belle Alisha mini logo - monogram LA in elegant script" class="h-10">
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400">© 2023 La Belle Alisha. All rights reserved.</p>
+                    <p class="text-gray-400 text-sm mt-2">Handcrafted with love in NYC</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-20 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 class="text-xl font-bold">Your Shopping Bag</h3>
+                <button id="closeCartBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="mb-4">
+                <!-- Cart items will be loaded here -->
+                <div id="emptyCart" class="text-center py-8">
+                    <i class="fas fa-shopping-bag text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Your bag is empty</p>
+                </div>
+            </div>
+            
+            <div id="cartSummary" class="border-t pt-4 hidden">
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>Shipping</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg mb-6">
+                    <span>Total</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-primary hover:bg-opacity-90 text-white py-3 rounded font-medium">Checkout</button>
+                <a href="#" class="block text-center mt-4 text-gray-500 hover:text-primary">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden fade-in">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toastMessage">Item added to cart successfully!</span>
+        </div>
+    </div>
+
+    <script>
+        // Product Data (Simulated Database)
+        const products = [
+            {
+                id: 1,
+                name: "Ethereal Evening Gown",
+                description: "Flowy chiffon gown with delicate beading and adjustable straps",
+                price: 349.99,
+                images: [
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7222aa2b-9683-4269-9076-e0c5b42d43df.png",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/971be1bc-d574-42d8-bf99-1449e6d95c14.png"
+                ],
+                colors: ["Rose Gold", "Midnight Blue", "Blush Pink"],
+                sizes: ["XS", "S", "M", "L", "XL"]
+            },
+            {
+                id: 2,
+                name: "Modern Office Sheath",
+                description: "Structured wool blend dress with hidden pockets and waist accent",
+                price: 229.99,
+                images: [
+                    "https://placehold.co/800x1000",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b70fc581-e495-48c9-ab26-89cd44c0990f.png"
+                ],
+                colors: ["Charcoal", "Navy", "Camel"],
+                sizes: ["XS", "S", "M", "L"]
+            },
+            {
+                id: 3,
+                name: "Bohemian Summer Dress",
+                description: "Lightweight cotton dress with floral embroidery and tiered skirt",
+                price: 189.99,
+                images: [
+                    "https://placehold.co/800x1000",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7bd80790-0b2a-4bb5-bf78-17e0e284709a.png"
+                ],
+                colors: ["Coral", "Sage Green", "Cream"],
+                sizes: ["XS", "S", "M", "L", "XL"]
+            },
+            {
+                id: 4,
+                name: "Velvet A-Line Mini",
+                description: "Luxury velvet dress with square neckline and puff sleeves",
+                price: 279.99,
+                images: [
+                    "https://placehold.co/800x1000",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/87673040-75e5-438d-b6e5-dc5c24db47cb.png"
+                ],
+                colors: ["Emerald", "Burgundy", "Black"],
+                sizes: ["XS", "S", "M"]
+            },
+            {
+                id: 5,
+                name: "Wrap Dress Signature",
+                description: "Iconic wrap design in crepe fabric with subtle ruching",
+                price: 199.99,
+                images: [
+                    "https://placehold.co/800x1000",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d8bb4ff5-e16e-4281-820e-2eec74962e46.png"
+                ],
+                colors: ["Red", "Navy", "Leopard Print"],
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 6,
+                name: "Tulle Party Dress",
+                description: "Sweetheart neckline with layered tulle skirt and satin sash",
+                price: 319.99,
+                images: [
+                    "https://placehold.co/800x1000",
+                    "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/185e3f62-6542-47c6-bbc8-640b0504f5f6.png"
+                ],
+                colors: ["Black", "Ice Blue", "Blush"],
+                sizes: ["XS", "S", "M", "L"]
+            }
+        ];
+
+        // Cart Management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // DOM Elements
+        const productsContainer = document.getElementById('productsContainer');
+        const cartBtn = document.getElementById('cartBtn');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartItems = document.getElementById('cartItems');
+        const emptyCart = document.getElementById('emptyCart');
+        const cartSummary = document.getElementById('cartSummary');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartCount = document.getElementById('cartCount');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const successToast = document.getElementById('successToast');
+        const toastMessage = document.getElementById('toastMessage');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const contactForm = document.getElementById('contactForm');
+        
+        // Render Products
+        function renderProducts() {
+            productsContainer.innerHTML = '';
+            
+            products.forEach(product => {
+                const productEl = document.createElement('div');
+                productEl.className = 'product-card rounded-lg overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow duration-300 relative';
+                productEl.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.images[0]}" alt="${product.name} - ${product.description}" class="w-full h-80 object-cover">
+                        <div class="product-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center">
+                            <button class="text-white mb-2 bg-primary hover:bg-opacity-90 px-6 py-2 rounded-full font-medium view-details" data-id="${product.id}">
+                                Quick View
+                            </button>
+                            <button class="text-white bg-white text-primary hover:bg-opacity-90 px-6 py-2 rounded-full font-medium add-to-cart" data-id="${product.id}">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-primary">$${product.price.toFixed(2)}</span>
+                            <div class="flex space-x-1">
+                                ${product.colors.map(color => 
+                                    `<span class="h-3 w-3 rounded-full" style="background-color: ${getColorHex(color)}" title="${color}"></span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productsContainer.appendChild(productEl);
+            });
+            
+            // Add event listeners for new product buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+            
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    viewProductDetails(productId);
+                });
+            });
+        }
+        
+        // Get color hex code (simplified for demo)
+        function getColorHex(colorName) {
+            const colors = {
+                "Rose Gold": "#e0bfb8",
+                "Midnight Blue": "#003366",
+                "Blush Pink": "#f8c3cd",
+                "Charcoal": "#36454f",
+                "Navy": "#000080",
+                "Camel": "#c19a6b",
+                "Coral": "#ff7f50",
+                "Sage Green": "#b2ac88",
+                "Cream": "#fffdd0",
+                "Emerald": "#50c878",
+                "Burgundy": "#800020",
+                "Black": "#000000",
+                "Red": "#ff0000",
+                "Leopard Print": "#e8b25c",
+                "Ice Blue": "#99ffff",
+                "Blush": "#de5d83"
+            };
+            return colors[colorName] || "#cccccc";
+        }
+        
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1,
+                    selectedSize: product.sizes[0],
+                    selectedColor: product.colors[0]
+                });
+            }
+            
+            updateCart();
+            showToast(`${product.name} added to cart`);
+        }
+        
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+        
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) return;
+            
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                updateCart();
+            }
+        }
+        
+        function updateCart() {
+            // Save to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart count
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Update cart UI if sidebar is open
+            if (cartSidebar.classList.contains('translate-x-0')) {
+                renderCartItems();
+            }
+        }
+        
+        function renderCartItems() {
+            if (cart.length === 0) {
+                emptyCart.classList.remove('hidden');
+                cartSummary.classList.add('hidden');
+                cartItems.innerHTML = '';
+                return;
+            }
+            
+            emptyCart.classList.add('hidden');
+            cartSummary.classList.remove('hidden');
+            
+            cartItems.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = 'flex items-center py-4 border-b cart-item';
+                itemEl.innerHTML = `
+                    <img src="${item.images[0]}" alt="${item.name} in cart" class="h-20 w-16 object-cover rounded mr-4">
+                    <div class="flex-1">
+                        <h4 class="font-medium">${item.name}</h4>
+                        <p class="text-sm text-gray-500">${item.selectedColor}, ${item.selectedSize}</p>
+                        <div class="flex items-center mt-1">
+                            <button class="quantity-btn px-2" data-id="${item.id}" data-action="decrease">-</button>
+                            <span class="mx-2 w-8 text-center">${item.quantity}</span>
+                            <button class="quantity-btn px-2" data-id="${item.id}" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-medium">$${itemTotal.toFixed(2)}</p>
+                        <button class="text-red-500 text-sm mt-2 remove-item" data-id="${item.id}">Remove</button>
+                    </div>
+                `;
+                cartItems.appendChild(itemEl);
+            });
+            
+            // Update subtotal and total
+            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+            cartTotal.textContent = `$${subtotal.toFixed(2)}`;
+            
+            // Add event listeners
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    const action = e.target.getAttribute('data-action');
+                    const item = cart.find(item => item.id === productId);
+                    
+                    if (action === 'increase') {
+                        updateQuantity(productId, item.quantity + 1);
+                    } else if (action === 'decrease') {
+                        updateQuantity(productId, item.quantity - 1);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    removeFromCart(productId);
+                });
+            });
+        }
+        
+        function viewProductDetails(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // In a real app, this would open a modal with full details
+            // For this demo, we'll just scroll to the top of the page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // And show a toast message
+            showToast(`Viewing details for ${product.name}`);
+        }
+        
+        function showToast(message) {
+            toastMessage.textContent = message;
+            successToast.classList.remove('hidden');
+            setTimeout(() => {
+                successToast.classList.add('fade-in');
+            }, 10);
+            
+            setTimeout(() => {
+                successToast.classList.remove('fade-in');
+                setTimeout(() => {
+                    successToast.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+        
+        // Event Listeners
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-full');
+            cartSidebar.classList.add('translate-x-0');
+            cartOverlay.classList.remove('hidden');
+            renderCartItems();
+        });
+        
+        closeCartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-0');
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('hidden');
+        });
+        
+        cartOverlay.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-0');
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('hidden');
+        });
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // In a real app, this would send to a backend
+            console.log('Form submitted:', formData);
+            
+            // Show success message
+            showToast('Message sent successfully!');
+            
+            // Reset form
+            contactForm.reset();
+        });
+        
+        checkoutBtn.addEventListener('click', () => {
+            // In a real app, this would go to a checkout page
+            showToast('Proceeding to checkout');
+        });
+        
+        // Initialize the app
+        renderProducts();
+        updateCart();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
